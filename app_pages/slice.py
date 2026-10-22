@@ -4,10 +4,12 @@ import time
 import streamlit as st
 
 from core.card import render_card
+from core.illustrations import mascot
 from core.exercises import build_candidates, local_by_id
 from core.pizza_types import ORDER, REST, label
 from core.progress import EATEN, OPENED, SNOOZED, gave_up, next_pending
 from core.progress import REST as REST_STATUS
+from core.style import ticket_stub
 from core.ui import POSTURE_LABEL, add_log, footer, today_context
 from core.weather import advice, arrange
 
@@ -42,12 +44,13 @@ type_key = f"type:{t.day}:{idx}"
 if st.session_state.get(type_key) not in ORDER:
     st.session_state[type_key] = user["pizza_type"] if user["pizza_type"] in ORDER else "shoulder"
 choice = st.pills("지금 컨디션은 어때요?", ORDER, format_func=label, key=type_key, required=True)
-header = f"{t.times[idx]} 조각 · {label(choice)}"
+stub = (f"{t.times[idx]} 조각", label(choice))
 
 if choice == REST:
-    with st.container(border=True):
-        st.caption(header)
-        st.subheader("오늘은 휴무")
+    with st.container(key="ticket-rest"):
+        ticket_stub("오늘은 휴무", t.times[idx])
+        with st.container(horizontal_alignment="center"):
+            st.image(mascot("rest", 170), width=170, alt="쉬고 있는 피자 조각")
         st.markdown("무리하지 말고 쉬어요. 이 조각은 '쉼'으로 남겨 둘게요.")
         st.warning("통증이 계속되면 전문의와 상담하세요.", icon=":material/health_and_safety:")
     if st.button("쉼으로 표시하고 돌아가기", key="rest_done", type="primary"):
@@ -64,7 +67,7 @@ if st.session_state.get(posture_key) not in POSTURE_LABEL:
 posture = st.segmented_control("자세", list(POSTURE_LABEL), format_func=POSTURE_LABEL.get, key=posture_key,
                                required=True)
 if tip and (tip["message"] or tip["temp_note"]):
-    st.caption(f"{tip['icon']} {tip['label']} · " + " ".join(x for x in (tip["message"], tip["temp_note"]) if x))
+    st.caption(f"{tip['icon']} " + " ".join(x for x in (tip["message"], tip["temp_note"]) if x))
 
 cache = st.session_state.setdefault("candidates", {})
 if (choice, posture) not in cache:
@@ -83,7 +86,7 @@ cursor = st.session_state.get(cursor_key, 0) % len(items)
 item = items[cursor]
 if note:
     st.caption(note)
-render_card(item, header=header, key=f"card:{item['id']}")
+render_card(item, stub=stub, key=f"card:{item['id']}")
 
 # 동작 타이머 (동작마다 따로, 기본 30초). 1분 이상이면 분으로 보여 준다 (바깥 걷기 5분)
 timer_key = f"timer:{t.day}:{idx}:{item['id']}"

@@ -2,6 +2,7 @@ import streamlit as st
 
 from core.api_status import APIS, check_all, key_status, muscle_table
 from core.translate import QUOTA_FLAG
+from core.style import ticket_stub
 from core.ui import footer, get_store
 
 st.title("사용한 API 정보")
@@ -13,13 +14,13 @@ if st.button("지금 연결 확인하기", key="check_apis", icon=":material/wif
 checks = st.session_state.get("api_checks", {})
 
 for api in APIS:
-    with st.container(border=True):
-        head = st.container(horizontal=True, vertical_alignment="center")
-        head.subheader(api["name"])
+    with st.container(key=f"ticket-api-{api['id']}"):
         result = checks.get(api["id"])
+        status = f"응답 {result['ms']}ms" if result and result["ok"] else ""
+        ticket_stub(api["name"], status)
         if result:
-            badge = ":green-badge[:material/check: 연결됨]" if result["ok"] else ":red-badge[:material/close: 실패]"
-            head.markdown(f"{badge} {result['detail']} · {result['ms']}ms")
+            st.markdown((":green-badge[:material/check: 연결됨] " if result["ok"] else ":red-badge[:material/close: 실패] ")
+                        + result["detail"])
         st.markdown(api["role"])
         st.markdown(
             f"- **쓰는 곳**: {api['where']}\n"

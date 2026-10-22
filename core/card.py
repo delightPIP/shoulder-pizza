@@ -2,6 +2,7 @@
 import streamlit as st
 
 from core.exercises import DIFFICULTY_KO, MUSCLE_KO, POSTURE_KO, TAG_KO, photos_for
+from core.style import ticket_stub
 from core.translate import translate, translate_lines
 
 DISCLAIMER = "의료 조언이 아닙니다. 통증이 있으면 멈추세요."
@@ -33,7 +34,8 @@ def _steps(lines: list[str], key: str) -> None:
             st.markdown(_numbered(lines[VISIBLE_STEPS:], VISIBLE_STEPS + 1))
 
 
-def render_card(item: dict, *, header: str, key: str) -> None:
+def render_card(item: dict, *, stub: tuple[str, str], key: str) -> None:
+    """stub: 티켓 머리 (왼쪽: 시각, 오른쪽: 컨디션)."""
     is_api = item["source"] == "ninjas"
     if is_api:
         # 번역을 먼저 계산해 실패하면 카드 위에 안내를 1회 띄운다. 처음엔 몇 초 걸려서 안내를 보여 준다
@@ -48,8 +50,8 @@ def render_card(item: dict, *, header: str, key: str) -> None:
     else:
         name, steps, translated, images = item["name"], item["steps"], True, item["images"]
 
-    with st.container(border=True):
-        st.caption(header)
+    with st.container(key="ticket-card"):
+        ticket_stub(*stub)
         st.subheader(name)
         if is_api:
             st.caption(item["name_en"])
@@ -83,8 +85,8 @@ def render_card(item: dict, *, header: str, key: str) -> None:
 
 def source_line(item: dict, has_photo: bool) -> str:
     if item["source"] == "ninjas":
-        line = "출처: API Ninjas · 번역 MyMemory"
-        return line + " · 사진 free-exercise-db" if has_photo else line
+        photo = ", 사진은 free-exercise-db" if has_photo else ""
+        return f"출처: 동작은 API Ninjas, 번역은 MyMemory{photo}"
     if item["id"].startswith(("Eye_", "Outdoor_")):
-        return "출처: 어깨PIZZA"
+        return "출처: 어깨PIZZA가 직접 쓴 동작이에요"
     return "출처: free-exercise-db (Unlicense)"

@@ -4,11 +4,13 @@
 """
 import streamlit as st
 
+from core import style
 from core.effects import effect_html
 from core.ui import get_store
 from core.weather import DEFAULT_CITY, current_weather
 
 st.set_page_config(page_title="어깨PIZZA", page_icon="🍕", layout="centered")
+style.apply()  # 가게 전체 스타일 (주문 티켓, 잉크 버튼, 체크 식탁보 띠)
 
 st.session_state.setdefault("user", None)
 st.session_state.setdefault("pending_email", None)

@@ -49,7 +49,7 @@ def make_user(tmp_path, *, slices=3):
 
 def texts(at):
     return " ".join(str(e.value) for kind in ("title", "subheader", "markdown", "caption", "info", "success",
-                                              "warning", "error") for e in getattr(at, kind))
+                                              "warning", "error", "html") for e in getattr(at, kind))
 
 
 def test_new_user_goes_from_landing_through_onboarding_to_empty_pizza(tmp_path):
@@ -139,7 +139,7 @@ def test_unfinished_day_ends_with_frown_pizza(tmp_path):
     at.session_state["user"] = user
     at.run()
     assert not at.exception
-    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자 😎" in texts(at)
+    assert "괜찮아, 내일 또 맛있게 구워보자." in texts(at) and "인상 피자 😎" in texts(at)
 
 
 def test_mail_link_opens_slice_and_logs_opened(tmp_path):
@@ -171,7 +171,7 @@ def test_record_page_renders(tmp_path):
     at.run()
     at.switch_page("app_pages/record.py").run()
     assert not at.exception
-    assert "피자 달력" in texts(at)
+    assert "단골 도장판" in texts(at)
 
 
 def test_slice_count_can_be_changed_repeatedly_up_to_eight(tmp_path):
@@ -210,7 +210,7 @@ def test_give_up_shows_failure_screen_and_blocks_slices(tmp_path):
     assert "남은 3조각은" in texts(at)  # 확인 창
     at.button(key="give_up_yes").click().run()
     assert not at.exception
-    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자 😎" in texts(at)
+    assert "괜찮아, 내일 또 맛있게 구워보자." in texts(at) and "인상 피자 😎" in texts(at)
     assert "오늘은 여기까지 하기로 했어요" in texts(at)
     assert [r["status"] for r in store_of(tmp_path).logs("u1")] == ["gave_up"]
     at.switch_page("app_pages/slice.py").run()
