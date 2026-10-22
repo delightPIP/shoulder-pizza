@@ -66,3 +66,14 @@ def test_streak_counts_back_from_today_or_yesterday():
     assert streak(done, d) == 2  # 오늘 아직 못 채워도 어제까지 이어진 기록
     assert streak(done | {d}, d) == 3
     assert streak({date(2026, 10, 19)}, d) == 0
+
+
+def test_giving_up_ends_the_day_as_over_but_full_pizza_still_wins():
+    from core.progress import GAVE_UP, gave_up
+
+    logs = [log(0, EATEN), {"slice_idx": "-1", "status": GAVE_UP, "date": "2026-10-22"}]
+    assert gave_up(logs)
+    assert slice_statuses(logs, 3) == [EATEN, None, None]  # -1은 조각이 아니다
+    assert day_result([EATEN, None, None], DTS, NOON, given_up=True) == OVER
+    assert day_result([EATEN] * 3, DTS, NOON, given_up=True) == COMPLETE
+    assert not gave_up([log(0, EATEN)])

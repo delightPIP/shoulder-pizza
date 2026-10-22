@@ -13,7 +13,7 @@ from email.message import EmailMessage
 from urllib.parse import urlencode
 
 from core.config import get_secret, local_store_path, service_account_info
-from core.progress import EATEN, REST, SNOOZED
+from core.progress import EATEN, GAVE_UP, REST, SNOOZED
 from core.schedule import TZ, slice_datetimes
 from core.store import make_store
 
@@ -30,7 +30,9 @@ def due_mails(user: dict, logs: list[dict], sent: set, now: datetime) -> list[di
         iso = day.isoformat()
         dts = slice_datetimes(day, user["window_start"], user["window_end"], int(user["slices"]))
         day_logs = [r for r in logs if r["date"] == iso]
-        done = {int(r["slice_idx"]) for r in day_logs if r["status"] in (EATEN, REST)}
+        if any(r["status"] == GAVE_UP for r in day_logs):
+            continue  # "오늘은 더 이상 못하겠어요"를 누른 날은 더 보내지 않는다
+        done ={int(r["slice_idx"]) for r in day_logs if r["status"] in (EATEN, REST)}
         for i, dt in enumerate(dts):
             if i not in done and dt <= now < dt + GRACE and (uid, iso, str(i), SLICE) not in sent:
                 out.append({"day": day, "idx": i, "n": len(dts), "at": dt, "kind": SLICE})

@@ -6,7 +6,7 @@ from pathlib import Path
 import streamlit as st
 
 from core.config import get_secret, local_store_path, service_account_info
-from core.progress import day_result, slice_statuses, slice_toppings
+from core.progress import day_result, gave_up, slice_statuses, slice_toppings
 from core.schedule import TZ, pizza_day, slice_datetimes, slice_times
 from core.store import make_store
 
@@ -72,7 +72,7 @@ def today_context(user: dict) -> Today:
     logs = day_logs(user["uid"], day)
     statuses = slice_statuses(logs, len(times))
     return Today(day, current, times, dts, logs, statuses, slice_toppings(logs, len(times)),
-                 day_result(statuses, dts, current))
+                 day_result(statuses, dts, current, gave_up(logs)))
 
 
 def add_log(user: dict, day: date, slice_idx: int, status: str, *, pizza_type: str = "",
@@ -87,5 +87,6 @@ def add_log(user: dict, day: date, slice_idx: int, status: str, *, pizza_type: s
 def footer(sources: str = "날씨 Open-Meteo · 동작 API Ninjas, free-exercise-db · 번역 MyMemory") -> None:
     st.divider()
     st.caption(f":material/health_and_safety: {DISCLAIMER}  \n데이터: {sources}")
+    st.page_link("app_pages/apis.py", label="사용한 API 정보", icon=":material/api:")
     if get_store().backend == "file":
         st.caption("기록은 이 서버에 임시로 저장돼요 (Google Sheets 미연결).")

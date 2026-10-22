@@ -6,6 +6,7 @@ EATEN = "eaten"
 REST = "rest"
 OPENED = "opened"
 SNOOZED = "snoozed"
+GAVE_UP = "gave_up"  # "오늘은 더 이상 못하겠어요": 그날을 실패로 마감한다 (slice_idx는 -1)
 
 ONGOING = "ongoing"
 COMPLETE = "complete"  # 한 판을 모두 먹었다
@@ -38,9 +39,16 @@ def slice_toppings(logs: list[dict], n: int) -> list[str | None]:
     return toppings
 
 
-def day_result(statuses: list[str | None], slice_dts: list[datetime], now: datetime) -> str:
+def gave_up(logs: list[dict]) -> bool:
+    return any(row["status"] == GAVE_UP for row in logs)
+
+
+def day_result(statuses: list[str | None], slice_dts: list[datetime], now: datetime,
+               given_up: bool = False) -> str:
     if statuses and all(s == EATEN for s in statuses):
         return COMPLETE
+    if given_up:
+        return OVER
     if statuses and all(s is not None for s in statuses):
         return OVER  # 모두 처리했지만 쉰 조각이 있다
     if slice_dts and now > slice_dts[-1] + timedelta(minutes=GRACE_MINUTES):

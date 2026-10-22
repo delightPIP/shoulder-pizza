@@ -6,7 +6,7 @@ import streamlit as st
 from core.card import render_card
 from core.exercises import build_candidates
 from core.pizza_types import ORDER, REST, label
-from core.progress import EATEN, OPENED, SNOOZED, next_pending
+from core.progress import EATEN, OPENED, SNOOZED, gave_up, next_pending
 from core.progress import REST as REST_STATUS
 from core.ui import POSTURE_LABEL, add_log, footer, today_context
 from core.weather import advice
@@ -14,6 +14,13 @@ from core.weather import advice
 user = st.session_state.user
 t = today_context(user)
 weather = st.session_state.get("weather")
+
+if gave_up(t.logs):
+    st.title("한 조각 먹기")
+    st.info("오늘은 여기까지 하기로 했어요. 내일 또 맛있게 구워 봐요.", icon=":material/bedtime:")
+    st.page_link("app_pages/pizza.py", label="오늘의 피자", icon=":material/local_pizza:")
+    footer()
+    st.stop()
 
 idx = st.session_state.get("current_slice")
 if idx is None or not 0 <= idx < t.n or t.statuses[idx] is not None:
