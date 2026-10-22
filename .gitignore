@@ -10,3 +10,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+
+# 로컬 기록 저장소 (Google Sheets 미연결 시)
+.local_store.json

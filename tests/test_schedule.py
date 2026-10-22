@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from core.schedule import TZ, minutes_until, slice_datetimes, slice_times
+from core.schedule import TZ, minutes_until, pizza_day, slice_datetimes, slice_times
 
 
 def test_three_slices_in_workday():
@@ -41,6 +41,18 @@ def test_datetimes_roll_over_to_next_day():
     got = slice_datetimes(date(2026, 10, 22), "22:00", "02:00", 3)
     assert [d.strftime("%m-%d %H:%M") for d in got] == ["10-22 22:00", "10-23 00:00", "10-23 02:00"]
     assert all(d.tzinfo == TZ for d in got)
+
+
+def test_pizza_day_for_normal_window_is_today():
+    assert pizza_day(datetime(2026, 10, 22, 1, 0, tzinfo=TZ), "09:00", "18:00") == date(2026, 10, 22)
+
+
+def test_pizza_day_after_midnight_belongs_to_yesterday():
+    late = datetime(2026, 10, 23, 1, 30, tzinfo=TZ)
+    assert pizza_day(late, "22:00", "02:00") == date(2026, 10, 22)
+    # 종료 + 60분이 지나면 새 하루
+    assert pizza_day(datetime(2026, 10, 23, 3, 1, tzinfo=TZ), "22:00", "02:00") == date(2026, 10, 23)
+    assert pizza_day(datetime(2026, 10, 23, 22, 30, tzinfo=TZ), "22:00", "02:00") == date(2026, 10, 23)
 
 
 def test_minutes_until():
