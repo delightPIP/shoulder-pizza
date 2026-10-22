@@ -50,6 +50,7 @@ def test_faces():
     happy = pizza_svg(3, ["eaten"] * 3, face="happy")
     frown = pizza_svg(3, ["eaten", None, None], face="frown")
     assert 'class="steam' in happy and 'class="steam' not in frown  # 김은 완성 피자에만
+    assert 'class="sunglasses"' in frown and 'class="sunglasses"' not in happy  # 인상 피자 😎
     ET.fromstring(happy)
     ET.fromstring(frown)
 

@@ -111,12 +111,17 @@ def _face(kind: str) -> str:
             f'<circle cx="122" cy="176" r="7" fill="#f28c8c" opacity=".55"/>'
             f'<circle cx="198" cy="176" r="7" fill="#f28c8c" opacity=".55"/>'
         )
-    # frown: 인상 쓴 피자 (미간 주름, 처진 눈썹, 시무룩한 입)
+    # frown: 인상 쓴 피자 😎 (미간 주름, 처진 눈썹, 선글라스, 시무룩한 입)
     return plate + (
-        f'<path d="M124 140 L148 148 M196 140 L172 148" stroke="{ink}" stroke-width="5" stroke-linecap="round"/>'
-        f'<path d="M156 134 v10 M164 134 v10" stroke="{ink}" stroke-width="3" stroke-linecap="round"/>'
-        f'<circle cx="138" cy="160" r="5" fill="{ink}"/><circle cx="182" cy="160" r="5" fill="{ink}"/>'
-        f'<path d="M136 192 q24 -18 48 0" stroke="{ink}" stroke-width="5" fill="none" stroke-linecap="round"/>'
+        f'<path d="M122 136 L148 144 M198 136 L172 144" stroke="{ink}" stroke-width="5" stroke-linecap="round"/>'
+        f'<path d="M156 130 v9 M164 130 v9" stroke="{ink}" stroke-width="3" stroke-linecap="round"/>'
+        '<g class="sunglasses">'
+        f'<path d="M112 152 H208" stroke="{ink}" stroke-width="4" stroke-linecap="round"/>'
+        '<path d="M116 152 h38 v8 q0 16 -19 16 q-19 0 -19 -16 Z" fill="#231a14"/>'
+        '<path d="M166 152 h38 v8 q0 16 -19 16 q-19 0 -19 -16 Z" fill="#231a14"/>'
+        '<path d="M124 157 l9 0 M174 157 l9 0" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".7"/>'
+        '</g>'
+        f'<path d="M138 198 q22 -16 44 0" stroke="{ink}" stroke-width="5" fill="none" stroke-linecap="round"/>'
     )
 
 
