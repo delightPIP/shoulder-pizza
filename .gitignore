@@ -1,0 +1,12 @@
+# 비밀값
+.env
+.streamlit/secrets.toml
+service-account*.json
+*-credentials.json
+
+# 파이썬
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
