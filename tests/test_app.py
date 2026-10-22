@@ -238,3 +238,49 @@ def test_api_page_is_reachable_before_login_and_checks_fail_gracefully(tmp_path)
     at.button(key="check_apis").click().run()  # 오프라인이라 모두 실패해도 멈추지 않는다
     assert not at.exception
     assert texts(at).count("실패") >= 4
+
+
+def test_settings_is_one_page_and_can_turn_mails_back_on(tmp_path):
+    user, _ = make_user(tmp_path)
+    store_of(tmp_path).save_user({**user, "active": "false"})  # 메일 수신 거부했던 사용자
+    at = AppTest.from_file(APP, default_timeout=20)
+    at.session_state["user"] = {**user, "active": "false"}
+    at.run()
+    at.switch_page("app_pages/onboarding.py").run()
+    assert not at.exception
+    page = texts(at)
+    for question in ("몇 시부터 몇 시까지 알려줄까요?", "어느 동네에 계세요?", "어떤 피자가 좋을지 선택해봐요.",
+                     "몇 조각으로 잘라줄까요?"):
+        assert question in page  # 단계 없이 한 화면에 모두
+    assert not at.get("progress")
+    at.toggle(key="ob_active").set_value(True).run()
+    at.get("button_group")[-1].set_value(6)
+    at.run()
+    at.button(key="ob_save").click().run()
+    assert not at.exception
+    saved = store_of(tmp_path).find_user(uid="u1")
+    assert (saved["slices"], saved["active"]) == ("6", "true")
+    assert "오늘의 피자" in texts(at)
+
+
+def test_future_slices_wait_for_their_time(tmp_path):
+    user, _ = make_user(tmp_path)
+    at = AppTest.from_file(APP, default_timeout=20)
+    at.session_state["user"] = user
+    at.run()
+    keys = {b.key for b in at.button}
+    assert "go_0" in keys  # 시각이 된 첫 조각
+    assert "go_2" not in keys  # 아직 안 된 조각은 버튼 대신 알림 예정
+    assert "알림 예정" in texts(at)
+
+
+def test_slice_page_shows_disclaimer_once_and_hides_storage_note(tmp_path):
+    user, _ = make_user(tmp_path)
+    at = AppTest.from_file(APP, default_timeout=20)
+    at.session_state["user"] = user
+    at.run()
+    at.button(key="eat_now").click().run()
+    assert texts(at).count("의료 조언이 아닙니다") == 1
+    assert "임시" not in texts(at)
+    at.switch_page("app_pages/apis.py").run()
+    assert "기록 저장소" in texts(at)

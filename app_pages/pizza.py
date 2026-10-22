@@ -20,6 +20,8 @@ eaten = eaten_count(t.statuses)
 
 if st.session_state.pop("just_baked", False):
     st.toast("피자 반죽 완료! 첫 조각을 기다려요.", icon="🍕")
+if st.session_state.pop("settings_saved", False):
+    st.toast("설정을 저장했어요.", icon=":material/save:")
 if fresh is not None:
     st.toast(f"조각 완성! {eaten}/{t.n}", icon="🍕")
 if st.session_state.pop("snoozed", False):
@@ -41,8 +43,9 @@ st.progress(eaten / t.n, text=f"{eaten} / {t.n} 조각 완성")
 
 nxt = next_pending(t.statuses) if t.result == ONGOING else None
 face = {COMPLETE: "happy", OVER: "frown"}.get(t.result)
-st.image(pizza_svg(t.n, t.statuses, t.toppings, times=t.times, highlight=nxt, fresh=fresh, face=face),
-         width=340, alt=f"오늘의 피자: {t.n}조각 중 {eaten}조각 완성")
+with st.container(horizontal_alignment="center"):
+    st.image(pizza_svg(t.n, t.statuses, t.toppings, times=t.times, highlight=nxt, fresh=fresh, face=face),
+             width=340, alt=f"오늘의 피자: {t.n}조각 중 {eaten}조각 완성")
 
 if t.result == COMPLETE:
     if not st.session_state.get(f"celebrated:{t.day}"):
@@ -50,11 +53,14 @@ if t.result == COMPLETE:
         st.session_state[f"celebrated:{t.day}"] = True
     history = get_store().logs(user["uid"], until=t.day)
     done_days = {d for d, c in daily_eaten(history).items() if c >= t.n}
+    days = streak(done_days, t.day)
     with st.container(border=True):
-        st.subheader("한 판 완성! 따끈따끈한 어깨 피자가 나왔어요")
+        st.subheader(":material/celebration: 한 판 완성!")
+        st.markdown("따끈따끈한 어깨 피자가 나왔어요. 오늘 하루도 몸을 잘 챙겼어요.")
         summary = topping_summary(t.logs)
-        st.markdown("오늘의 토핑: " + " + ".join(f"**{label(k)}** {c}조각" for k, c in summary.items()))
-        st.metric("연속으로 구운 날", f"{streak(done_days, t.day)}일")
+        st.markdown("오늘의 토핑 " + " ".join(f":orange-badge[{label(k)} ×{c}]" for k, c in summary.items()))
+        st.markdown(f":material/local_fire_department: **{days}일** 연속으로 한 판을 구웠어요"
+                    if days > 1 else ":material/local_fire_department: 내일도 구우면 연속 기록이 시작돼요")
         st.page_link("app_pages/record.py", label="기록 보러 가기", icon=":material/calendar_month:")
 
 elif t.result == OVER:
@@ -114,8 +120,16 @@ for i, hhmm in enumerate(t.times):
     topping = f" · {label(t.toppings[i])}" if t.toppings[i] else ""
     row.markdown(f"**{hhmm}** {slice_label(i, t.n)} {mark}{topping}")
     if status is None and t.result == ONGOING:
-        if row.button("먹으러 가기", key=f"go_{i}", icon=":material/arrow_forward:"):
-            st.session_state.current_slice = i
-            st.switch_page("app_pages/slice.py")
+        if t.dts[i] <= t.now:  # 시각이 된 조각만 바로 먹으러 간다 (미리 먹기는 '지금 한 조각 먹기')
+            if row.button("먹으러 가기", key=f"go_{i}", icon=":material/arrow_forward:"):
+                st.session_state.current_slice = i
+                st.switch_page("app_pages/slice.py")
+        else:
+            row.caption(":material/notifications: 알림 예정")
+
+# 휴대폰에서는 상단 메뉴가 사이드바 안으로 숨어서 바로가기를 둔다
+links = st.container(horizontal=True, horizontal_alignment="center")
+links.page_link("app_pages/record.py", label="기록", icon=":material/calendar_month:")
+links.page_link("app_pages/onboarding.py", label="설정", icon=":material/edit_note:")
 
 footer()

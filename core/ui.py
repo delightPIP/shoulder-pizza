@@ -84,9 +84,9 @@ def add_log(user: dict, day: date, slice_idx: int, status: str, *, pizza_type: s
     st.session_state.pop(_logs_key(user["uid"], day), None)
 
 
-def footer(sources: str = "날씨 Open-Meteo · 동작 API Ninjas, free-exercise-db · 번역 MyMemory") -> None:
+def footer(sources: str = "날씨 Open-Meteo · 동작 API Ninjas, free-exercise-db · 번역 MyMemory", *,
+           disclaimer: bool = True) -> None:
     st.divider()
-    st.caption(f":material/health_and_safety: {DISCLAIMER}  \n데이터: {sources}")
+    lines = ([f":material/health_and_safety: {DISCLAIMER}"] if disclaimer else []) + [f"데이터: {sources}"]
+    st.caption("  \n".join(lines))
     st.page_link("app_pages/apis.py", label="사용한 API 정보", icon=":material/api:")
-    if get_store().backend == "file":
-        st.caption("기록은 이 서버에 임시로 저장돼요 (Google Sheets 미연결).")
