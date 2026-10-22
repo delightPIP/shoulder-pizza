@@ -46,13 +46,15 @@ if user is None:
         st.Page("app_pages/landing.py", title="어깨PIZZA", icon=":material/local_pizza:", default=True),
         st.Page("app_pages/onboarding.py", title="피자 주문서", icon=":material/edit_note:"),
         st.Page("app_pages/pizza.py", title="오늘의 피자", icon=":material/local_pizza:"),
+        st.Page("app_pages/apis.py", title="API 정보", icon=":material/api:"),
     ], position="hidden")
 else:
     pizza = st.Page("app_pages/pizza.py", title="오늘의 피자", icon=":material/local_pizza:")
     slice_page = st.Page("app_pages/slice.py", title="한 조각 먹기", icon=":material/self_improvement:")
     record = st.Page("app_pages/record.py", title="기록", icon=":material/calendar_month:")
     settings = st.Page("app_pages/onboarding.py", title="설정", icon=":material/edit_note:")
-    nav = st.navigation([pizza, slice_page, record, settings], position="top")
+    apis = st.Page("app_pages/apis.py", title="API 정보", icon=":material/api:")
+    nav = st.navigation([pizza, slice_page, record, settings, apis], position="top")
 
     with st.sidebar:
         st.caption(f":material/mail: {user['email']}")

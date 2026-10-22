@@ -10,6 +10,7 @@ from core.ui import footer, get_store, now
 from core.weather import CITIES, DEFAULT_CITY
 
 STEPS = 5
+SLICE_OPTIONS = list(range(3, 9))  # 3~8조각
 existing = st.session_state.user
 email = existing["email"] if existing else st.session_state.pending_email
 if not email:
@@ -22,7 +23,7 @@ if "ob" not in st.session_state:
         "end": src.get("window_end") or "18:00",
         "city": src.get("city") if src.get("city") in CITIES else DEFAULT_CITY,
         "pizza_type": src.get("pizza_type") if src.get("pizza_type") in ORDER else "shoulder",
-        "slices": int(src.get("slices") or 3),
+        "slices": min(max(int(src.get("slices") or 3), SLICE_OPTIONS[0]), SLICE_OPTIONS[-1]),
         "privacy": src.get("consent_privacy") == "true",
         "app_notice": src.get("consent_app_notice") == "true",
     }
@@ -35,6 +36,18 @@ def go(delta: int) -> None:
     st.session_state.ob_step = min(STEPS, max(1, st.session_state.ob_step + delta))
 
 
+def bind(name: str, value) -> str:
+    """위젯 key를 고정하고 처음 한 번만 값을 넣는다.
+
+    value=/default=에 바뀐 값을 매번 넘기면 Streamlit이 다른 위젯으로 보고 방금 고른 값을 버린다
+    (두 번째 선택부터 안 눌리는 버그). 단계를 넘기면 위젯 값은 사라지므로 ob에서 다시 채운다.
+    """
+    key = f"ob_{name}"
+    if key not in st.session_state:
+        st.session_state[key] = value
+    return key
+
+
 st.title("주문서 고치기" if existing else "피자 주문서")
 st.progress(step / STEPS, text=f"{step} / {STEPS}")
 
@@ -42,22 +55,21 @@ with st.container(border=True):
     if step == 1:
         st.subheader("몇 시부터 몇 시까지 알려줄까요?")
         c1, c2 = st.columns(2)
-        start = c1.time_input("시작", value=time.fromisoformat(ob["start"]), step=300)
-        end = c2.time_input("끝", value=time.fromisoformat(ob["end"]), step=300)
+        start = c1.time_input("시작", key=bind("start", time.fromisoformat(ob["start"])), step=300)
+        end = c2.time_input("끝", key=bind("end", time.fromisoformat(ob["end"])), step=300)
         ob["start"], ob["end"] = start.strftime("%H:%M"), end.strftime("%H:%M")
         st.caption("끝나는 시각이 시작보다 이르면 다음 날 새벽까지로 계산해요.")
 
     elif step == 2:
         st.subheader("어느 동네에 계세요?")
-        cities = list(CITIES)
-        ob["city"] = st.selectbox("동네", cities, index=cities.index(ob["city"]))
+        ob["city"] = st.selectbox("동네", list(CITIES), key=bind("city", ob["city"]))
         st.caption("날씨에 맞는 스트레칭을 골라 드려요.")
 
     elif step == 3:
         st.subheader("앱 서비스는 준비 중이에요, 메일로 알려드릴게요.")
         st.markdown(f"받는 주소: **{email}**")
-        ob["app_notice"] = st.checkbox("앱이 나오면 메일로 알려 주세요 (선택)", value=ob["app_notice"])
-        ob["privacy"] = st.checkbox("개인정보 수집·이용에 동의해요 (필수)", value=ob["privacy"], key="ob_privacy")
+        ob["app_notice"] = st.checkbox("앱이 나오면 메일로 알려 주세요 (선택)", key=bind("app_notice", ob["app_notice"]))
+        ob["privacy"] = st.checkbox("개인정보 수집·이용에 동의해요 (필수)", key=bind("privacy", ob["privacy"]))
         with st.expander("무엇을 받고 어떻게 쓰나요?"):
             st.markdown(
                 "- 받는 정보: 메일 주소, 동네, 알림 시간대, 피자 종류와 스트레칭 기록\n"
@@ -69,16 +81,18 @@ with st.container(border=True):
     elif step == 4:
         st.subheader("어떤 피자가 좋을지 선택해봐요.")
         options = [k for k in ORDER if k != REST]  # 휴무는 조각마다 고른다
-        picked = st.pills("피자 종류", options, format_func=label, default=ob["pizza_type"],
+        picked = st.pills("피자 종류", options, format_func=label, key=bind("pizza_type", ob["pizza_type"]),
                           required=True, label_visibility="collapsed")
         ob["pizza_type"] = picked or ob["pizza_type"]
         st.caption("컨디션에 따라 맞춤 스트레칭을 안내할게요. 조각을 열 때마다 바꿀 수도 있어요.")
 
     else:
         st.subheader("몇 조각으로 잘라줄까요?")
-        ob["slices"] = st.segmented_control("조각 수", [3, 4, 5], default=ob["slices"], required=True,
-                                            format_func=lambda n: f"{n}조각", label_visibility="collapsed") or 3
-        st.caption("하루에 3~5번 알려 드려요.")
+        ob["slices"] = st.segmented_control(
+            "조각 수", SLICE_OPTIONS, key=bind("slices", ob["slices"]), required=True,
+            format_func=lambda n: f"{n}조각", label_visibility="collapsed",
+        ) or SLICE_OPTIONS[0]
+        st.caption(f"하루에 {SLICE_OPTIONS[0]}~{SLICE_OPTIONS[-1]}번 알려 드려요.")
         times = slice_times(ob["start"], ob["end"], ob["slices"])
         st.image(pizza_svg(len(times), [None] * len(times), times=times), width=300,
                  alt=f"{len(times)}조각으로 자른 빈 피자판")
@@ -116,6 +130,8 @@ elif row.button("피자 굽기", key="ob_bake", type="primary", icon=":material/
     st.session_state.user = user
     st.session_state.pending_email = None
     del st.session_state["ob"]
+    for name in ("start", "end", "city", "app_notice", "privacy", "pizza_type", "slices"):
+        st.session_state.pop(f"ob_{name}", None)
     st.session_state.just_baked = True
     st.switch_page("app_pages/pizza.py")
 

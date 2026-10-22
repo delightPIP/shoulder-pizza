@@ -2,9 +2,12 @@ import streamlit as st
 
 from core.pizza_art import pizza_svg
 from core.pizza_types import label
-from core.progress import COMPLETE, EATEN, ONGOING, OVER, REST, daily_eaten, eaten_count, next_pending, streak, topping_summary
+from core.progress import (
+    COMPLETE, EATEN, GAVE_UP, ONGOING, OVER, REST,
+    daily_eaten, eaten_count, gave_up, next_pending, streak, topping_summary,
+)
 from core.schedule import minutes_until
-from core.ui import footer, get_store, now, slice_label, today_context
+from core.ui import add_log, footer, get_store, now, slice_label, today_context
 from core.weather import advice
 
 user = st.session_state.user
@@ -56,6 +59,8 @@ if t.result == COMPLETE:
 
 elif t.result == OVER:
     with st.container(border=True):
+        if gave_up(t.logs):
+            st.markdown("오늘은 여기까지 하기로 했어요. 쉬는 것도 중요해요.")
         st.markdown(f"오늘은 {eaten}조각을 먹었어요." if eaten else "오늘은 조각을 먹지 못했어요.")
         st.subheader("괜찮아, 내일 또 맛있게 구워보자. 인상 피자^^")
 
@@ -75,11 +80,31 @@ else:
             st.info(f"다음 조각({t.times[nxt]})까지 {f'{h}시간 ' if h else ''}{m}분 남았어요",
                     icon=":material/schedule:")
 
+    # 확인 창이 열려 있는지는 세션에 둔다 (창 안 버튼을 누른 실행에서도 창과 버튼이 있어야 클릭이 처리된다)
+    def close_give_up():
+        st.session_state.pop("confirm_give_up", None)
+
+    def give_up():
+        add_log(user, t.day, -1, GAVE_UP)
+        close_give_up()
+        st.rerun()
+
+    @st.dialog("오늘은 여기까지 할까요?", icon=":material/sentiment_dissatisfied:", on_dismiss=close_give_up)
+    def confirm_give_up():
+        st.markdown(f"남은 {t.n - eaten}조각은 오늘 먹지 않은 걸로 남기고, 오늘 알림 메일도 멈출게요.")
+        row = st.container(horizontal=True)
+        row.button("네, 오늘은 못하겠어요", key="give_up_yes", type="primary", on_click=give_up)
+        row.button("조금 더 해 볼게요", key="give_up_no", on_click=close_give_up)
+
     countdown()
     if st.button("지금 한 조각 먹기", key="eat_now", type="primary", icon=":material/local_pizza:", width="stretch"):
         st.session_state.current_slice = nxt
         st.switch_page("app_pages/slice.py")
     st.caption("알림 메일은 조각 시각에 맞춰 보내요. 몇 분 늦을 수 있어요.")
+    st.button("오늘은 더 이상 못하겠어요", key="give_up", type="tertiary", icon=":material/sentiment_dissatisfied:",
+              on_click=lambda: st.session_state.update(confirm_give_up=True))
+    if st.session_state.get("confirm_give_up"):
+        confirm_give_up()
 
 st.subheader("오늘의 조각")
 for i, hhmm in enumerate(t.times):

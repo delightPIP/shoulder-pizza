@@ -138,3 +138,10 @@ def test_inactive_user_gets_nothing(env, monkeypatch, capsys):
     monkeypatch.setattr(sd, "datetime", type("FixedDT", (datetime,), {"now": classmethod(lambda cls, tz=None: at(9, 3))}))
     assert sd.main(["--local", "--dry-run"]) == 0
     assert "보낼 메일 0통" in capsys.readouterr().out
+
+
+def test_no_mail_after_giving_up_that_day():
+    logs = [log(-1, "gave_up")]
+    assert sd.due_mails(USER, logs, set(), at(13, 35)) == []
+    tomorrow = DAY + timedelta(days=1)
+    assert kinds(sd.due_mails(USER, logs, set(), at(9, 5, tomorrow))) == [(0, "slice")]  # 다음 날은 다시 보낸다

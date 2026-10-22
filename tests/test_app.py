@@ -172,3 +172,69 @@ def test_record_page_renders(tmp_path):
     at.switch_page("app_pages/record.py").run()
     assert not at.exception
     assert "피자 달력" in texts(at)
+
+
+def test_slice_count_can_be_changed_repeatedly_up_to_eight(tmp_path):
+    """주문서 위젯의 두 번째 선택부터 무시되던 버그 회귀 테스트."""
+    from datetime import time
+
+    at = AppTest.from_file(APP, default_timeout=20).run()
+    at.text_input[0].input("eight@example.com")
+    at.button[0].click().run()
+    at.time_input[0].set_value(time(8, 0)).run()
+    at.time_input[0].set_value(time(7, 0)).run()
+    at.time_input[1].set_value(time(22, 0)).run()
+    for _ in range(2):
+        at.button(key="ob_next").click().run()
+    at.checkbox(key="ob_privacy").check().run()
+    for _ in range(2):
+        at.button(key="ob_next").click().run()
+    options = at.get("button_group")[-1]
+    assert [o.content for o in options.proto.options] == [f"{n}조각" for n in range(3, 9)]
+    for pick in (5, 4, 8):
+        at.get("button_group")[-1].set_value(pick)
+        at.run()
+        assert at.session_state["ob"]["slices"] == pick
+    at.button(key="ob_bake").click().run()
+    assert not at.exception
+    saved = store_of(tmp_path).find_user(email="eight@example.com")
+    assert (saved["slices"], saved["window_start"], saved["window_end"]) == ("8", "07:00", "22:00")
+
+
+def test_give_up_shows_failure_screen_and_blocks_slices(tmp_path):
+    user, day = make_user(tmp_path)
+    at = AppTest.from_file(APP, default_timeout=20)
+    at.session_state["user"] = user
+    at.run()
+    at.button(key="give_up").click().run()
+    assert "남은 3조각은" in texts(at)  # 확인 창
+    at.button(key="give_up_yes").click().run()
+    assert not at.exception
+    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자^^" in texts(at)
+    assert "오늘은 여기까지 하기로 했어요" in texts(at)
+    assert [r["status"] for r in store_of(tmp_path).logs("u1")] == ["gave_up"]
+    at.switch_page("app_pages/slice.py").run()
+    assert "오늘은 여기까지 하기로 했어요" in texts(at)
+
+
+def test_give_up_can_be_cancelled(tmp_path):
+    user, _ = make_user(tmp_path)
+    at = AppTest.from_file(APP, default_timeout=20)
+    at.session_state["user"] = user
+    at.run()
+    at.button(key="give_up").click().run()
+    at.button(key="give_up_no").click().run()
+    assert "인상 피자" not in texts(at)
+    assert store_of(tmp_path).logs("u1") == []
+
+
+def test_api_page_is_reachable_before_login_and_checks_fail_gracefully(tmp_path):
+    at = AppTest.from_file(APP, default_timeout=20).run()
+    at.switch_page("app_pages/apis.py").run()
+    assert not at.exception
+    page = texts(at)
+    for name in ("Open-Meteo", "API Ninjas Exercises", "MyMemory 번역", "free-exercise-db"):
+        assert name in page
+    at.button(key="check_apis").click().run()  # 오프라인이라 모두 실패해도 멈추지 않는다
+    assert not at.exception
+    assert texts(at).count("실패") >= 4
