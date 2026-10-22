@@ -21,7 +21,7 @@
 - 알림 시각 계산은 `core/schedule.py`의 순수 함수로 만들고 앱과 메일러가 함께 쓴다. `pytest`로 테스트한다.
 - 모든 시각은 `Asia/Seoul` 기준이다. GitHub Actions는 UTC로 돈다.
 - Streamlit API(`st.navigation`, `st.Page`, `st.switch_page`, `st.fragment`)와 Google Sheets 연동은 설치한 버전의 문서로 확인한 뒤 쓴다.
-- UI 문구는 한국어로 쓴다. 피자 종류 이름 옆에는 항상 실제 컨디션 문구를 같이 보여 준다.
+- UI 문구는 한국어로 쓴다. 고르는 곳에는 컨디션 문구(`condition()`), 결과를 보여 주는 곳에는 피자 이름(`label()`)을 쓴다. 피자 이름은 몸을 펴는 행동으로 짓고 효과를 약속하지 않는다.
 - 화면 효과는 `prefers-reduced-motion`을 따르고 끌 수 있어야 한다.
 
 ## 안전·개인정보 문구 (고정)
@@ -47,6 +47,5 @@ pytest
 - 날씨(Open-Meteo)로 화면 효과와 동작 추천을 바꾼다.
 
 ## 미결 사항 (임의로 정하지 말고 물어볼 것)
-- 피자 종류 최종 이름 (사용자가 검토 중. 확정 전에는 컨디션 문구만 쓴다)
 - `data/eyes_ko.json`의 눈 동작 내용 검수
 - Gmail 발송 한도와 테스터 수

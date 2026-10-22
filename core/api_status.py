@@ -5,7 +5,7 @@ import requests
 
 from core import exercises, translate, weather
 from core.config import get_secret
-from core.pizza_types import ORDER, PIZZA_TYPES, label
+from core.pizza_types import ORDER, PIZZA_TYPES, condition, label
 
 APIS = [
     {
@@ -74,7 +74,7 @@ def key_status(api: dict) -> str:
 
 
 def muscle_table() -> list[tuple[str, str]]:
-    return [(label(k), ", ".join(PIZZA_TYPES[k]["muscles"]) or "호출 안 함") for k in ORDER]
+    return [(f"{label(k)} ({condition(k)})", ", ".join(PIZZA_TYPES[k]["muscles"]) or "호출 안 함") for k in ORDER]
 
 
 def _timed(fn) -> dict:

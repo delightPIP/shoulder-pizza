@@ -88,16 +88,16 @@ shoulder-pizza/
 
 ## 5. 피자 종류 (`core/pizza_types.py`)
 
-종류 이름은 미정이다(사용자 검토 중). 아래는 임시 키와 화면 문구다. 이름이 정해지면 문구 옆에 붙인다. 화면에는 항상 컨디션 문구를 같이 보여 준다.
+고르는 곳(주문서, 한 조각 먹기)에는 `condition()`(컨디션 문구)을, 결과를 보여 주는 곳(메뉴판, 축하 카드, 기록)에는 `label()`(피자 이름)을 쓴다. 이름은 몸을 펴는 행동으로 짓고 효과를 약속하는 말은 쓰지 않는다(테스트로 확인).
 
-| key | 컨디션 문구 | API Ninjas muscle | 로컬 데이터 태그 |
-| --- | --- | --- | --- |
-| shoulder | 어깨가 뻐근해요 | neck, middle_back, chest | shoulder, neck |
-| head | 머리가 굳은 것 같아요 | neck | neck, energy |
-| eyes | 눈이 침침해요 | 호출 안 함 (해당 muscle 없음) | eyes (`eyes_ko.json`) |
-| good | 컨디션이 좋아요 | 무작위 1개 | 전체 |
-| back | 허리가 뻐근해요 | lower_back, middle_back | back |
-| closed | 아파요 (통증·저림) | 호출 안 함 | 없음 |
+| key | 컨디션 문구 | 피자 이름 | API Ninjas muscle | 로컬 데이터 태그 |
+| --- | --- | --- | --- | --- |
+| shoulder | 어깨가 뻐근해요 | 어깨 쫙 펴는 피자 | neck, middle_back, chest | shoulder, neck |
+| head | 머리가 굳은 것 같아요 | 머리 환기하는 피자 | neck | neck, energy |
+| eyes | 눈이 침침해요 | 눈 쉬어 가는 피자 | 호출 안 함 (해당 muscle 없음) | eyes (`eyes_ko.json`) |
+| good | 컨디션이 좋아요 | 오늘도 쌩쌩 피자 | 무작위 1개 | 전체 |
+| back | 허리가 뻐근해요 | 허리 쭉 펴는 피자 | lower_back, middle_back | back |
+| closed | 아파요 (통증·저림) | 푹 쉬어 가는 날 | 호출 안 함 | 없음 |
 
 - `closed`(휴무)를 고르면 API를 호출하지 않는다. 휴식과 "통증이 계속되면 전문의와 상담하세요"를 보여 주고 그 조각은 "쉼"으로 기록한다.
 - 온보딩에서 고른 종류가 기본값이고, slice 페이지에서 그 조각만 바꿀 수 있다.

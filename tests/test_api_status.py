@@ -35,5 +35,5 @@ def test_checks_report_failures_without_raising(monkeypatch):
 
 def test_muscle_table_matches_pizza_types():
     table = dict(api_status.muscle_table())
-    assert table["어깨가 뻐근해요"] == "neck, middle_back, chest"
-    assert table["눈이 침침해요"] == "호출 안 함"
+    assert table["어깨 쫙 펴는 피자 (어깨가 뻐근해요)"] == "neck, middle_back, chest"
+    assert table["눈 쉬어 가는 피자 (눈이 침침해요)"] == "호출 안 함"
