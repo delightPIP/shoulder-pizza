@@ -105,21 +105,22 @@ elif st.session_state[timer_key] > time.time():
 else:
     st.success("다 했어요! '다 먹었어요'를 눌러 조각을 채워요.", icon=":material/check_circle:")
 
-row = st.container(horizontal=True)
-if row.button(f"다른 동작 ({cursor + 1}/{len(items)})", key="next_move", icon=":material/refresh:",
-              disabled=len(items) < 2):
-    st.session_state[cursor_key] = cursor + 1
-    st.rerun()
-if row.button("다 먹었어요", key="done", type="primary", icon=":material/check_circle:"):
+# 주 행동(다 먹었어요)은 화면 폭 전체로, 보조 행동은 그 아래 한 줄에
+if st.button("다 먹었어요", key="done", type="primary", icon=":material/check_circle:", width="stretch"):
     add_log(user, t.day, idx, EATEN, pizza_type=choice, exercise_id=item["id"],
             weather=weather["category"] if weather else "")
     st.session_state.fresh_slice = idx
     st.session_state.pop("current_slice", None)
     st.switch_page("app_pages/pizza.py")
+row = st.container(horizontal=True, horizontal_alignment="distribute")
+if row.button(f"다른 동작 ({cursor + 1}/{len(items)})", key="next_move", icon=":material/refresh:",
+              disabled=len(items) < 2):
+    st.session_state[cursor_key] = cursor + 1
+    st.rerun()
 if row.button("30분 뒤 다시", key="snooze", icon=":material/snooze:"):
     add_log(user, t.day, idx, SNOOZED, pizza_type=choice)
     st.session_state.snoozed = True
     st.session_state.pop("current_slice", None)
     st.switch_page("app_pages/pizza.py")
 
-footer()
+footer(disclaimer=False)  # 카드 안에 이미 의료 고지가 있다

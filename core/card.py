@@ -36,14 +36,15 @@ def _steps(lines: list[str], key: str) -> None:
 def render_card(item: dict, *, header: str, key: str) -> None:
     is_api = item["source"] == "ninjas"
     if is_api:
-        # 번역을 먼저 계산해 실패하면 카드 위에 안내를 1회 띄운다
-        name, ok_name = translate(item["name_en"])
-        steps, ok_steps = translate_lines(item["steps_en"])
+        # 번역을 먼저 계산해 실패하면 카드 위에 안내를 1회 띄운다. 처음엔 몇 초 걸려서 안내를 보여 준다
+        with st.spinner("동작 설명을 한국어로 옮기는 중이에요..."):
+            name, ok_name = translate(item["name_en"])
+            steps, ok_steps = translate_lines(item["steps_en"])
+            images = photos_for(item["name_en"])
         translated = ok_name and ok_steps
         if not translated and not st.session_state.get(NOTICE_SHOWN):
             st.info("번역 한도를 넘어 원문으로 보여 드려요", icon=":material/translate:")
             st.session_state[NOTICE_SHOWN] = True
-        images = photos_for(item["name_en"])
     else:
         name, steps, translated, images = item["name"], item["steps"], True, item["images"]
 
@@ -54,7 +55,7 @@ def render_card(item: dict, *, header: str, key: str) -> None:
             st.caption(item["name_en"])
         st.markdown(_badges(item))
         if images:
-            st.image(images, caption=["시작 자세", "늘리는 자세"][: len(images)], width=200,
+            st.image(images, caption=["시작 자세", "늘리는 자세"][: len(images)], width=150,  # 휴대폰에서도 나란히
                      alt=[f"{item['name_en']} 시작 자세", f"{item['name_en']} 늘리는 자세"][: len(images)])
         _steps(steps, key)
 

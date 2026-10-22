@@ -2,7 +2,7 @@ import streamlit as st
 
 from core.api_status import APIS, check_all, key_status, muscle_table
 from core.translate import QUOTA_FLAG
-from core.ui import footer
+from core.ui import footer, get_store
 
 st.title("사용한 API 정보")
 st.markdown("어깨PIZZA는 아래 **무료 API**를 불러와요. 하나가 실패해도 앱은 멈추지 않고 대체 방법으로 보여 줘요.")
@@ -39,5 +39,9 @@ for api in APIS:
 if st.session_state.get(QUOTA_FLAG):
     st.warning("이번 세션에서 번역 한도를 넘어 원문으로 보여 드리고 있어요.", icon=":material/translate:")
 st.caption("키와 이메일 값은 화면에 보여 주지 않아요. '연결 확인'을 누를 때만 각 API를 한 번씩 불러요.")
+if get_store().backend == "file":
+    st.caption(":material/storage: 기록 저장소: 이 서버의 임시 파일 (Google Sheets 미연결, 서버가 다시 시작되면 사라질 수 있어요)")
+else:
+    st.caption(":material/storage: 기록 저장소: Google Sheets")
 
 footer()
