@@ -10,7 +10,8 @@ PRD는 `docs/PRD.md`에 있다. 이 문서는 구현을 위한 화면, 데이터
 | --- | --- |
 | 언어·프레임워크 | Python 3.11+, Streamlit (멀티페이지는 `st.navigation`과 `st.Page`, 확인 필요) |
 | 피자 그림 | 인라인 SVG 일러스트 (조각 수만큼 분할, 손글씨 느낌). 조각 상태는 SVG 색으로 표현 |
-| 글꼴 | 또박또박한 고딕체 Noto Sans KR (Google Fonts, 제목·본문 공통). 손글씨체는 읽기 어려워 바꿨다 |
+| 디자인 | 동네 피자가게의 주문 티켓. 밀가루 흰 종이, 에스프레소 잉크 선, 토마토 도장. 나무 도마 위 손그림 피자(`core/pizza_art.py`), 차양·마스코트·도장(`core/illustrations.py`), 공통 CSS(`core/style.py`), 색 토큰(`core/palette.py`) |
+| 글꼴 | 제목은 간판 글꼴 도현(Do Hyeon), 본문은 IBM Plex Sans KR (Google Fonts). 손글씨체는 읽기 어려워 쓰지 않는다 |
 | HTTP | `requests` |
 | 저장소 | Google Sheets (`gspread` + 서비스 계정, 확인 필요) |
 | 메일 발송 | Gmail SMTP + GitHub Actions cron (Streamlit 앱과 분리된 `mailer/`) |

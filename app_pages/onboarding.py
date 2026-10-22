@@ -6,6 +6,7 @@ import streamlit as st
 from core.pizza_art import pizza_svg
 from core.pizza_types import ORDER, REST, label
 from core.schedule import slice_times
+from core.style import ticket_stub
 from core.ui import footer, get_store, now
 from core.weather import CITIES, DEFAULT_CITY
 
@@ -110,6 +111,7 @@ def section_slices() -> None:
 
 
 SECTIONS = [section_time, section_city, section_notice, section_type, section_slices]
+STUBS = ["알림 시간", "동네", "알림 메일", "피자 종류", "조각 수"]
 
 
 def save() -> None:
@@ -143,16 +145,17 @@ if existing:
     # 가입한 사용자: 한 화면에서 모두 보고 바로 저장한다
     st.title("설정")
     st.caption("바꾸고 싶은 것만 고치고 저장하세요. 오늘 먹은 조각 기록은 그대로 남아요.")
-    for section in SECTIONS:
-        with st.container(border=True):
+    for i, section in enumerate(SECTIONS):
+        with st.container(key=f"ticket-set-{i}"):
+            ticket_stub(STUBS[i])
             section()
     if st.button("저장하기", key="ob_save", type="primary", icon=":material/save:", width="stretch",
                  disabled=not ob["privacy"]):
         save()
 else:
     st.title("피자 주문서")
-    st.progress(step / STEPS, text=f"{step} / {STEPS}")
-    with st.container(border=True):
+    with st.container(key="ticket-step"):
+        ticket_stub(STUBS[step - 1], f"{step} / {STEPS}")
         SECTIONS[step - 1]()
     row = st.container(horizontal=True, horizontal_alignment="distribute")
     if step > 1:

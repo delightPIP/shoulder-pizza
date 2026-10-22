@@ -84,9 +84,22 @@ def add_log(user: dict, day: date, slice_idx: int, status: str, *, pizza_type: s
     st.session_state.pop(_logs_key(user["uid"], day), None)
 
 
-def footer(sources: str = "날씨 Open-Meteo · 동작 API Ninjas, free-exercise-db · 번역 MyMemory", *,
-           disclaimer: bool = True) -> None:
+SOURCES = "날씨는 Open-Meteo, 동작은 API Ninjas와 free-exercise-db, 번역은 MyMemory 데이터를 써요."
+
+
+def footer(*, disclaimer: bool = True) -> None:
     st.divider()
-    lines = ([f":material/health_and_safety: {DISCLAIMER}"] if disclaimer else []) + [f"데이터: {sources}"]
+    lines = ([f":material/health_and_safety: {DISCLAIMER}"] if disclaimer else []) + [SOURCES]
     st.caption("  \n".join(lines))
     st.page_link("app_pages/apis.py", label="사용한 API 정보", icon=":material/api:")
+
+
+def korean_date(d: date) -> str:
+    return f"{d.month}월 {d.day}일 {'월화수목금토일'[d.weekday()]}요일"
+
+
+def topic(word: str) -> str:
+    """은/는: 받침이 있으면 '은'."""
+    last = word[-1]
+    has_final = "가" <= last <= "힣" and (ord(last) - 0xAC00) % 28 != 0
+    return f"{word}{'은' if has_final else '는'}"

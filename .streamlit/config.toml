@@ -1,18 +1,25 @@
-# 피자가게 톤 (크림 반죽 배경 + 토마토 소스 강조색), 글꼴은 또박또박한 고딕체 Noto Sans KR
+# 동네 피자가게의 주문 티켓: 밀가루 흰 종이 + 에스프레소 잉크 + 토마토 도장
+# 제목은 간판 글꼴 도현(Do Hyeon), 본문은 영수증처럼 단정한 IBM Plex Sans KR
 [theme]
 base = "light"
-primaryColor = "#c2410c"
-backgroundColor = "#fff8ef"
-secondaryBackgroundColor = "#f6e7d3"
-textColor = "#3b2a20"
-borderColor = "#e6cfb3"
-linkColor = "#b4361a"
-font = "'Noto Sans KR':https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
-headingFont = "'Noto Sans KR':https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap"
-headingFontWeights = [700, 700, 700, 700, 700, 700]
-baseRadius = "large"
+primaryColor = "#C8321F"
+backgroundColor = "#FFFCF5"
+secondaryBackgroundColor = "#FBF0DC"
+textColor = "#2B1A12"
+borderColor = "#2B1A12"
+linkColor = "#C8321F"
+font = "'IBM Plex Sans KR':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap"
+headingFont = "'Do Hyeon':https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap"
+headingFontWeights = [400, 400, 400, 400, 400, 400]
+headingFontSizes = ["2.6rem", "1.75rem", "1.35rem", "1.1rem", "1rem", "0.9rem"]
+baseRadius = "0.4rem"
 buttonRadius = "full"
 showWidgetBorder = true
+showSidebarBorder = true
+
+[theme.sidebar]
+backgroundColor = "#FBF0DC"
+secondaryBackgroundColor = "#FFFCF5"
 
 [client]
 toolbarMode = "minimal"
