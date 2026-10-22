@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from core.pizza_types import ORDER, PIZZA_TYPES, label, ninjas_params
+from core.pizza_types import ORDER, PIZZA_TYPES, condition, label, ninjas_params
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 
@@ -10,8 +10,16 @@ def test_all_types_listed_in_order():
     assert set(ORDER) == set(PIZZA_TYPES)
 
 
-def test_label_shows_condition_until_name_is_decided():
-    assert label("shoulder") == "어깨가 뻐근해요"
+def test_names_are_actions_and_conditions_stay_for_choosing():
+    assert label("shoulder") == "어깨 쫙 펴는 피자"
+    assert condition("shoulder") == "어깨가 뻐근해요"
+    assert all(PIZZA_TYPES[k]["name"] and PIZZA_TYPES[k]["condition"] for k in ORDER)
+
+
+def test_names_make_no_health_promises():
+    for k in ORDER:
+        for banned in ("낫", "사라", "치료", "효과", "좋아져", "아파", "통증"):
+            assert banned not in label(k), (k, banned)
 
 
 def test_ninjas_params_rotate_muscles_and_always_stretching():

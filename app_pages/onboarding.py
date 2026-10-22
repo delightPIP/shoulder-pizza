@@ -4,10 +4,10 @@ from datetime import time
 import streamlit as st
 
 from core.pizza_art import pizza_svg
-from core.pizza_types import ORDER, REST, label
+from core.pizza_types import ORDER, REST, condition, label
 from core.schedule import slice_times
 from core.style import ticket_stub
-from core.ui import footer, get_store, now
+from core.ui import footer, get_store, now, obj
 from core.weather import CITIES, DEFAULT_CITY
 
 STEPS = 5
@@ -87,9 +87,10 @@ def section_notice() -> None:
 def section_type() -> None:
     st.subheader("어떤 피자가 좋을지 선택해봐요.")
     options = [k for k in ORDER if k != REST]  # 휴무는 조각마다 고른다
-    picked = st.pills("피자 종류", options, format_func=label, key=bind("pizza_type", ob["pizza_type"]),
+    picked = st.pills("지금 컨디션", options, format_func=condition, key=bind("pizza_type", ob["pizza_type"]),
                       required=True, label_visibility="collapsed")
     ob["pizza_type"] = picked or ob["pizza_type"]
+    st.markdown(f":material/local_pizza: {obj(label(ob['pizza_type']))} 구워 드릴게요.")
     st.caption("컨디션에 따라 맞춤 스트레칭을 안내할게요. 조각을 열 때마다 바꿀 수도 있어요.")
 
 

@@ -98,8 +98,16 @@ def korean_date(d: date) -> str:
     return f"{d.month}월 {d.day}일 {'월화수목금토일'[d.weekday()]}요일"
 
 
+def _has_final(word: str) -> bool:
+    last = word[-1]
+    return "가" <= last <= "힣" and (ord(last) - 0xAC00) % 28 != 0
+
+
 def topic(word: str) -> str:
     """은/는: 받침이 있으면 '은'."""
-    last = word[-1]
-    has_final = "가" <= last <= "힣" and (ord(last) - 0xAC00) % 28 != 0
-    return f"{word}{'은' if has_final else '는'}"
+    return f"{word}{'은' if _has_final(word) else '는'}"
+
+
+def obj(word: str) -> str:
+    """을/를: 받침이 있으면 '을'."""
+    return f"{word}{'을' if _has_final(word) else '를'}"

@@ -6,7 +6,7 @@ import streamlit as st
 from core.card import render_card
 from core.illustrations import mascot
 from core.exercises import build_candidates, local_by_id
-from core.pizza_types import ORDER, REST, label
+from core.pizza_types import ORDER, REST, condition, label
 from core.progress import EATEN, OPENED, SNOOZED, gave_up, next_pending
 from core.progress import REST as REST_STATUS
 from core.style import ticket_stub
@@ -43,7 +43,7 @@ st.title(f"{idx + 1}번째 조각")
 type_key = f"type:{t.day}:{idx}"
 if st.session_state.get(type_key) not in ORDER:
     st.session_state[type_key] = user["pizza_type"] if user["pizza_type"] in ORDER else "shoulder"
-choice = st.pills("지금 컨디션은 어때요?", ORDER, format_func=label, key=type_key, required=True)
+choice = st.pills("지금 컨디션은 어때요?", ORDER, format_func=condition, key=type_key, required=True)
 stub = (f"{t.times[idx]} 조각", label(choice))
 
 if choice == REST:
