@@ -10,7 +10,7 @@ PRD는 `docs/PRD.md`에 있다. 이 문서는 구현을 위한 화면, 데이터
 | --- | --- |
 | 언어·프레임워크 | Python 3.11+, Streamlit (멀티페이지는 `st.navigation`과 `st.Page`, 확인 필요) |
 | 피자 그림 | 인라인 SVG 일러스트 (조각 수만큼 분할, 손글씨 느낌). 조각 상태는 SVG 색으로 표현 |
-| 글꼴 | 손글씨체 웹폰트 (예: Gaegu, Hi Melody 등 Google Fonts, 확인 필요) |
+| 글꼴 | 또박또박한 고딕체 Noto Sans KR (Google Fonts, 제목·본문 공통). 손글씨체는 읽기 어려워 바꿨다 |
 | HTTP | `requests` |
 | 저장소 | Google Sheets (`gspread` + 서비스 계정, 확인 필요) |
 | 메일 발송 | Gmail SMTP + GitHub Actions cron (Streamlit 앱과 분리된 `mailer/`) |

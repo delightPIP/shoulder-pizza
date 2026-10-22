@@ -1,4 +1,4 @@
-# 피자가게 톤 (크림 반죽 배경 + 토마토 소스 강조색), 제목은 손글씨체
+# 피자가게 톤 (크림 반죽 배경 + 토마토 소스 강조색), 글꼴은 또박또박한 고딕체 Noto Sans KR
 [theme]
 base = "light"
 primaryColor = "#c2410c"
@@ -7,8 +7,8 @@ secondaryBackgroundColor = "#f6e7d3"
 textColor = "#3b2a20"
 borderColor = "#e6cfb3"
 linkColor = "#b4361a"
-font = "'Gowun Dodum':https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
-headingFont = "Gaegu:https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap"
+font = "'Noto Sans KR':https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+headingFont = "'Noto Sans KR':https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap"
 headingFontWeights = [700, 700, 700, 700, 700, 700]
 baseRadius = "large"
 buttonRadius = "full"
