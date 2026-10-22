@@ -139,7 +139,7 @@ def test_unfinished_day_ends_with_frown_pizza(tmp_path):
     at.session_state["user"] = user
     at.run()
     assert not at.exception
-    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자^^" in texts(at)
+    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자 😎" in texts(at)
 
 
 def test_mail_link_opens_slice_and_logs_opened(tmp_path):
@@ -210,7 +210,7 @@ def test_give_up_shows_failure_screen_and_blocks_slices(tmp_path):
     assert "남은 3조각은" in texts(at)  # 확인 창
     at.button(key="give_up_yes").click().run()
     assert not at.exception
-    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자^^" in texts(at)
+    assert "괜찮아, 내일 또 맛있게 구워보자. 인상 피자 😎" in texts(at)
     assert "오늘은 여기까지 하기로 했어요" in texts(at)
     assert [r["status"] for r in store_of(tmp_path).logs("u1")] == ["gave_up"]
     at.switch_page("app_pages/slice.py").run()

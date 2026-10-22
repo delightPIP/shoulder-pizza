@@ -85,6 +85,6 @@ def source_line(item: dict, has_photo: bool) -> str:
     if item["source"] == "ninjas":
         line = "출처: API Ninjas · 번역 MyMemory"
         return line + " · 사진 free-exercise-db" if has_photo else line
-    if item["id"].startswith("Eye_"):
+    if item["id"].startswith(("Eye_", "Outdoor_")):
         return "출처: 어깨PIZZA"
     return "출처: free-exercise-db (Unlicense)"
