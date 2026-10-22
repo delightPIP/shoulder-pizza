@@ -32,6 +32,10 @@ PM10_BAD = 81
 COLD = 5  # ℃ 이하 (가안)
 HOT = 28  # ℃ 이상 (가안)
 
+# 추운 날 먼저 보여 줄 '몸을 데우는' 동작: 로컬 id, API Ninjas 이름에 들어가는 단어
+WARM_UP_IDS = ["Shoulder_Circles", "Upward_Stretch", "Shoulder_Raise", "Wrist_Circles"]
+WARM_UP_WORDS = ("dynamic", "circle", "swing", "rotation", "roll")
+
 
 def classify_code(code: int | None) -> str:
     """WMO weather_code → 하늘 상태."""
@@ -77,23 +81,60 @@ def temp_flag(temp: float | None) -> str | None:
 def advice(category: str, temp: float | None = None, pizza_key: str | None = None) -> dict:
     """화면 문구, 기본 자세, 먼저 보여 줄 동작 (SPEC 7.3, 가안)."""
     label, icon = LABELS[category]
-    message, prefer = "", []
-    if category in INDOOR:
+    flag = temp_flag(temp)
+    message, prefer, prefer_words, extra, short_first = "", [], (), [], False
+    if category == DUSTY:
+        message = "미세먼지가 나쁜 날이에요. 창문은 닫고 짧고 가볍게 움직여요."
+        short_first = True
+    elif category in INDOOR:
         message = "오늘은 안에서 구워요. 창문은 닫아 두세요."
     elif category == CLEAR:
         if pizza_key == "eyes":
             message = "날씨가 맑아요. 창밖 먼 곳을 바라보며 한 조각 어때요?"
             prefer = ["Eye_Far_Gaze"]
+        elif flag is None:  # 맑고 춥지도 덥지도 않으면 바깥 조각을 제안한다
+            message = "날씨가 맑아요. 잠깐 밖에 나가 걸어 보는 건 어때요?"
+            extra = ["Outdoor_Walk"]
         else:
             message = "날씨가 맑아요. 창가에서 서서 한 조각 어때요?"
-    temp_note = {"cold": "쌀쌀해요. 천천히 몸부터 데워 볼까요?",
-                 "hot": "더워요. 무리하지 말고 천천히 해요."}.get(temp_flag(temp), "")
+    if flag == "cold":  # 몸을 데우는 동작 먼저
+        prefer = prefer + WARM_UP_IDS
+        prefer_words = WARM_UP_WORDS
+    elif flag == "hot":
+        short_first = True
+    temp_note = {"cold": "쌀쌀해요. 몸을 데우는 동작부터 천천히 해요.",
+                 "hot": "더워요. 시원한 곳에서 짧게 해요."}.get(flag, "")
     return {
         "category": category, "label": label, "icon": icon,
         "message": message, "temp_note": temp_note,
         "posture": "stand" if category == CLEAR and pizza_key != "eyes" else "chair",
-        "prefer": prefer, "indoor": category in INDOOR,
+        "prefer": prefer, "prefer_words": prefer_words, "extra": extra, "short_first": short_first,
+        "indoor": category in INDOOR,
     }
+
+
+def arrange(items: list[dict], tip: dict | None, posture: str | None, lookup) -> list[dict]:
+    """날씨 추천에 맞게 동작 순서를 바꾼다. lookup(id)는 로컬 동작을 찾아 준다 (바깥 조각용).
+
+    1. 바깥 조각(extra)은 '서서'를 골랐을 때 맨 앞에 넣는다
+    2. 먼저 보여 줄 동작(prefer id, API 이름의 prefer_words)을 앞으로
+    3. short_first면 짧은 동작을 앞으로 (로컬은 seconds, API는 설명 길이)
+    """
+    if not tip:
+        return items
+    out = list(items)
+    if tip["short_first"]:
+        out.sort(key=lambda i: i.get("seconds", 30) if i["source"] == "local" else len(" ".join(i["steps_en"])) / 10)
+    words = tip["prefer_words"]
+
+    def preferred(i: dict) -> bool:
+        return i["id"] in tip["prefer"] or (i["source"] == "ninjas" and any(w in i["id"] for w in words))
+
+    out.sort(key=lambda i: 0 if preferred(i) else 1)  # 안정 정렬이라 앞 순서가 유지된다
+    if posture in (None, "stand"):
+        extras = [x for x in (lookup(e) for e in tip["extra"]) if x and x["id"] not in {i["id"] for i in out}]
+        out = extras + out
+    return out
 
 
 def fetch_weather(lat: float, lon: float) -> dict:

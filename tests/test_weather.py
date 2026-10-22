@@ -35,8 +35,8 @@ def test_priority_storm_snow_rain_over_dust_over_fog_and_clear():
 @pytest.mark.parametrize("category", [w.RAIN, w.SNOW, w.STORM, w.DUSTY])
 def test_bad_weather_means_indoor_moves(category):
     a = w.advice(category)
-    assert a["indoor"] and a["posture"] == "chair"
-    assert "안에서" in a["message"]
+    assert a["indoor"] and a["posture"] == "chair" and a["extra"] == []
+    assert "창문은 닫" in a["message"]
 
 
 def test_clear_prefers_standing_and_eyes_prefer_far_gaze():
@@ -121,3 +121,77 @@ def test_effects_never_block_clicks_and_respect_reduced_motion(category):
 
 def test_no_effect_without_weather():
     assert effect_html(None) == ""
+
+
+# --- 날씨별 동작 순서 (arrange) ---
+
+def local(id_, seconds=30, source="local"):
+    return {"id": id_, "source": source, "seconds": seconds, "steps_en": []}
+
+
+def api(name, text="Stand tall."):
+    return {"id": name.lower(), "source": "ninjas", "steps_en": [text]}
+
+
+WALK = local("Outdoor_Walk", 300)
+
+
+def lookup(id_):
+    return WALK if id_ == "Outdoor_Walk" else None
+
+
+def ids(items):
+    return [i["id"] for i in items]
+
+
+def test_mild_clear_day_suggests_walking_outside_when_standing():
+    tip = w.advice(w.CLEAR, temp=18, pizza_key="shoulder")
+    assert tip["extra"] == ["Outdoor_Walk"] and "밖에 나가" in tip["message"]
+    items = [local("A"), local("B")]
+    assert ids(w.arrange(items, tip, "stand", lookup)) == ["Outdoor_Walk", "A", "B"]
+    assert ids(w.arrange(items, tip, "chair", lookup)) == ["A", "B"]  # 의자를 고르면 넣지 않는다
+
+
+def test_no_outdoor_walk_when_cold_hot_or_eyes():
+    assert w.advice(w.CLEAR, temp=2)["extra"] == []
+    assert w.advice(w.CLEAR, temp=31)["extra"] == []
+    assert w.advice(w.CLEAR, temp=18, pizza_key="eyes")["extra"] == []
+
+
+def test_cold_day_puts_warm_up_moves_first():
+    tip = w.advice(w.CLOUDY, temp=1)
+    items = [local("Cat_Stretch"), local("Shoulder_Circles"), local("Upward_Stretch")]
+    assert ids(w.arrange(items, tip, "chair", lookup))[:2] == ["Shoulder_Circles", "Upward_Stretch"]
+    api_items = [api("Chin To Chest Stretch"), api("Dynamic chest stretch"), api("Standing leg swing")]
+    assert ids(w.arrange(api_items, tip, "chair", lookup)) == [
+        "dynamic chest stretch", "standing leg swing", "chin to chest stretch"]
+    assert "몸을 데우는" in tip["temp_note"]
+
+
+@pytest.mark.parametrize("category, temp", [(w.DUSTY, 15), (w.CLOUDY, 31)])
+def test_dusty_or_hot_day_puts_short_moves_first(category, temp):
+    tip = w.advice(category, temp=temp)
+    assert tip["short_first"]
+    items = [local("Long", 40), local("Short", 20), local("Mid", 30)]
+    assert ids(w.arrange(items, tip, "chair", lookup)) == ["Short", "Mid", "Long"]
+    api_items = [api("Long", "x " * 200), api("Short", "x")]
+    assert ids(w.arrange(api_items, tip, "chair", lookup)) == ["short", "long"]
+
+
+def test_clear_eyes_still_puts_far_gaze_first():
+    tip = w.advice(w.CLEAR, temp=18, pizza_key="eyes")
+    items = [local("Eye_Slow_Blink"), local("Eye_Far_Gaze")]
+    assert ids(w.arrange(items, tip, "chair", lookup)) == ["Eye_Far_Gaze", "Eye_Slow_Blink"]
+
+
+def test_arrange_without_weather_keeps_order():
+    items = [local("A"), local("B")]
+    assert w.arrange(items, None, "stand", lookup) == items
+
+
+def test_outdoor_walk_is_not_a_normal_candidate():
+    from core.exercises import local_by_id, local_candidates
+
+    assert local_by_id("Outdoor_Walk")["name"] == "잠깐 밖에 나가 걷기"
+    for key in ("shoulder", "good", "back", "head"):
+        assert "Outdoor_Walk" not in ids(local_candidates(key))

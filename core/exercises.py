@@ -29,7 +29,7 @@ MUSCLE_KO = {
 }
 TAG_KO = {
     "neck": "목", "shoulder": "어깨", "back": "허리·등", "legs": "다리", "energy": "기분 전환",
-    "tired": "피로", "wrist": "손목", "eyes": "눈",
+    "tired": "피로", "wrist": "손목", "eyes": "눈", "outdoor": "바깥",
 }
 DIFFICULTY_KO = {"beginner": "쉬움", "intermediate": "보통", "expert": "어려움"}
 POSTURE_KO = {"chair": "의자", "stand": "서서", "floor": "바닥", "lying": "누워서"}
@@ -59,7 +59,7 @@ def infer_postures(instructions: str) -> list[str]:
 @lru_cache(maxsize=1)
 def load_local() -> tuple[dict, ...]:
     items = []
-    for name in ("stretches_ko.json", "eyes_ko.json"):
+    for name in ("stretches_ko.json", "eyes_ko.json", "outdoor_ko.json"):
         for raw in json.loads((ROOT / "data" / name).read_text(encoding="utf-8")):
             items.append({
                 "source": "local",
@@ -83,12 +83,17 @@ def local_candidates(pizza_key: str, posture: str | None = None) -> list[dict]:
     tags = PIZZA_TYPES[pizza_key]["tags"]
     if tags == []:
         return []  # 휴무
-    items = [i for i in load_local() if tags is None or set(i["tags"]) & set(tags)]
+    # 바깥 동작(outdoor)은 날씨가 좋을 때만 따로 꺼내 쓴다 (core/weather.py arrange)
+    items = [i for i in load_local() if "outdoor" not in i["tags"] and (tags is None or set(i["tags"]) & set(tags))]
     if tags is None:
         items = [i for i in items if "eyes" not in i["tags"]]  # '컨디션 좋아요'는 몸 동작 위주
     if posture:
         items = [i for i in items if set(i["postures"]) & POSTURE_FILTERS[posture]]
     return items
+
+
+def local_by_id(exercise_id: str) -> dict | None:
+    return next((i for i in load_local() if i["id"] == exercise_id), None)
 
 
 # --- API Ninjas ----------------------------------------------------------------

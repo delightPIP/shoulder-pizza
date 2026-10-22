@@ -4,12 +4,12 @@ import time
 import streamlit as st
 
 from core.card import render_card
-from core.exercises import build_candidates
+from core.exercises import build_candidates, local_by_id
 from core.pizza_types import ORDER, REST, label
 from core.progress import EATEN, OPENED, SNOOZED, gave_up, next_pending
 from core.progress import REST as REST_STATUS
 from core.ui import POSTURE_LABEL, add_log, footer, today_context
-from core.weather import advice
+from core.weather import advice, arrange
 
 user = st.session_state.user
 t = today_context(user)
@@ -71,8 +71,7 @@ if (choice, posture) not in cache:
     with st.spinner("오늘의 동작을 고르는 중이에요..."):
         cache[(choice, posture)] = build_candidates(choice, posture, seed=t.day.toordinal())
 items, source, note = cache[(choice, posture)]
-if tip and tip["prefer"]:
-    items = sorted(items, key=lambda i: 0 if i["id"] in tip["prefer"] else 1)
+items = arrange(items, tip, posture, local_by_id)  # 날씨에 맞게 순서 조정 (바깥 걷기, 몸 데우기, 짧은 동작)
 
 if not items:
     st.warning("이 자세로 할 수 있는 동작이 없어요. 다른 자세를 골라 보세요.")
@@ -86,11 +85,12 @@ if note:
     st.caption(note)
 render_card(item, header=header, key=f"card:{item['id']}")
 
-# 30초 타이머 (동작마다 따로)
+# 동작 타이머 (동작마다 따로, 기본 30초). 1분 이상이면 분으로 보여 준다 (바깥 걷기 5분)
 timer_key = f"timer:{t.day}:{idx}:{item['id']}"
 seconds = int(item.get("seconds") or 30)
+length = f"{seconds // 60}분" if seconds >= 60 and seconds % 60 == 0 else f"{seconds}초"
 if timer_key not in st.session_state:
-    st.button(f"{seconds}초 타이머 시작", key="timer_start", icon=":material/timer:",
+    st.button(f"{length} 타이머 시작", key="timer_start", icon=":material/timer:",
               on_click=lambda: st.session_state.update({timer_key: time.time() + seconds}))
 elif st.session_state[timer_key] > time.time():
 
@@ -99,7 +99,9 @@ elif st.session_state[timer_key] > time.time():
         left = st.session_state.get(timer_key, 0) - time.time()
         if left <= 0:
             st.rerun()  # 앱 전체를 다시 그려 타이머를 끝낸다
-        st.progress(1 - left / seconds, text=f"{math.ceil(left)}초 남았어요. 천천히 숨 쉬어요.")
+        rest = math.ceil(left)
+        shown = f"{rest // 60}:{rest % 60:02d}" if seconds >= 60 else f"{rest}초"
+        st.progress(1 - left / seconds, text=f"{shown} 남았어요. 천천히 숨 쉬어요.")
 
     timer()
 else:

@@ -36,7 +36,7 @@ if weather:
     if weather["pm25"] is not None:
         line += f" · 초미세먼지 {weather['pm25']:.0f}㎍/㎥ (참고용)"
     st.caption(line)
-    if a["message"] or a["temp_note"]:
+    if (a["message"] or a["temp_note"]) and t.result == ONGOING:  # 하루가 끝났으면 권유하지 않는다
         st.caption(" ".join(x for x in (a["message"], a["temp_note"]) if x))
 
 st.progress(eaten / t.n, text=f"{eaten} / {t.n} 조각 완성")
@@ -68,7 +68,7 @@ elif t.result == OVER:
         if gave_up(t.logs):
             st.markdown("오늘은 여기까지 하기로 했어요. 쉬는 것도 중요해요.")
         st.markdown(f"오늘은 {eaten}조각을 먹었어요." if eaten else "오늘은 조각을 먹지 못했어요.")
-        st.subheader("괜찮아, 내일 또 맛있게 구워보자. 인상 피자^^")
+        st.subheader("괜찮아, 내일 또 맛있게 구워보자. 인상 피자 😎")
 
 else:
 
