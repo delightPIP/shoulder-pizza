@@ -1,0 +1,54 @@
+[
+  {
+    "id": "Eye_Far_Gaze",
+    "name_ko": "창밖 먼 곳 바라보기",
+    "postures": ["chair", "stand"],
+    "tags": ["eyes"],
+    "seconds": 20,
+    "steps_ko": [
+      "화면에서 눈을 떼고 창밖이나 방 끝처럼 먼 곳을 바라봐요.",
+      "20초 동안 천천히 숨 쉬며 먼 곳에 시선을 둬요."
+    ],
+    "images": [],
+    "source": "어깨PIZZA 작성 (검수 필요)"
+  },
+  {
+    "id": "Eye_Slow_Blink",
+    "name_ko": "천천히 눈 깜빡이기",
+    "postures": ["chair", "stand", "lying"],
+    "tags": ["eyes"],
+    "seconds": 20,
+    "steps_ko": [
+      "눈을 살짝 감았다가 천천히 떠요.",
+      "10번 반복해요. 눈에 힘을 주지 않아요."
+    ],
+    "images": [],
+    "source": "어깨PIZZA 작성 (검수 필요)"
+  },
+  {
+    "id": "Eye_Slow_Look",
+    "name_ko": "눈동자 천천히 움직이기",
+    "postures": ["chair", "stand"],
+    "tags": ["eyes"],
+    "seconds": 30,
+    "steps_ko": [
+      "고개는 그대로 두고 눈동자만 위, 아래, 왼쪽, 오른쪽을 천천히 봐요.",
+      "각 방향에서 2초씩 머물러요. 어지러우면 바로 멈춰요."
+    ],
+    "images": [],
+    "source": "어깨PIZZA 작성 (검수 필요)"
+  },
+  {
+    "id": "Eye_Palming",
+    "name_ko": "손바닥으로 눈 감싸 쉬기",
+    "postures": ["chair", "lying"],
+    "tags": ["eyes"],
+    "seconds": 30,
+    "steps_ko": [
+      "두 손바닥을 비벼 따뜻하게 해요.",
+      "눈을 감고 손바닥으로 눈을 살짝 덮어 30초 동안 쉬어요. 눈을 누르지 않아요."
+    ],
+    "images": [],
+    "source": "어깨PIZZA 작성 (검수 필요)"
+  }
+]

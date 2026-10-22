@@ -37,6 +37,16 @@ def slice_datetimes(day: date, start: str, end: str, n: int) -> list[datetime]:
     return [base + timedelta(minutes=m) for m in slice_minutes(start, end, n)]
 
 
+def pizza_day(now: datetime, start: str, end: str, grace: int = 60) -> date:
+    """now가 속한 '피자 하루'의 날짜. 자정을 넘기는 시간대라면 새벽은 전날 피자에 속한다."""
+    s, e = _to_minutes(start), _to_minutes(end)
+    local = now.astimezone(TZ)
+    now_min = local.hour * 60 + local.minute
+    if e <= s and now_min <= e + grace and now_min < s:
+        return local.date() - timedelta(days=1)
+    return local.date()
+
+
 def minutes_until(target: datetime, now: datetime) -> int:
     """target까지 남은 분(올림). 이미 지났으면 0."""
     seconds = (target - now).total_seconds()
