@@ -1,0 +1,18 @@
+# 피자가게 톤 (크림 반죽 배경 + 토마토 소스 강조색), 제목은 손글씨체
+[theme]
+base = "light"
+primaryColor = "#c2410c"
+backgroundColor = "#fff8ef"
+secondaryBackgroundColor = "#f6e7d3"
+textColor = "#3b2a20"
+borderColor = "#e6cfb3"
+linkColor = "#b4361a"
+font = "'Gowun Dodum':https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
+headingFont = "Gaegu:https://fonts.googleapis.com/css2?family=Gaegu:wght@700&display=swap"
+headingFontWeights = [700, 700, 700, 700, 700, 700]
+baseRadius = "large"
+buttonRadius = "full"
+showWidgetBorder = true
+
+[client]
+toolbarMode = "minimal"
