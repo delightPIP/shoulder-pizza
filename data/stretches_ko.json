@@ -1,0 +1,501 @@
+[
+  {
+    "id": "Side_Neck_Stretch",
+    "name_ko": "목 옆 늘리기",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "neck"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "어깨 힘을 빼고 머리를 한쪽 어깨 쪽으로 천천히 기울여요.",
+      "같은 쪽 손으로 머리 옆을 살짝 당겨 15초, 반대쪽도 15초."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Shoulder_Raise",
+    "name_ko": "어깨 으쓱 내리기",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "shoulder"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "팔을 옆에 편하게 늘어뜨려요.",
+      "어깨를 귀 쪽으로 끌어올렸다가 천천히 툭 내려요. 5번 반복."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Raise/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Raise/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Shoulder_Circles",
+    "name_ko": "어깨 돌리기",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "shoulder",
+      "energy"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "팔은 옆이나 무릎 위에 편하게 둬요.",
+      "어깨를 앞→위→뒤→아래로 크게 굴려요. 15초 뒤 반대 방향."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Circles/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Circles/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Chair_Upper_Body_Stretch",
+    "name_ko": "등받이 잡고 상체 당기기",
+    "postures": [
+      "chair"
+    ],
+    "tags": [
+      "shoulder",
+      "back"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "의자 끝에 앉아 등받이를 뒤로 잡아요.",
+      "팔을 펴고 등을 곧게 세운 채 상체를 앞으로 내밀어 20~30초 버텨요."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Upper_Body_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Upper_Body_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Chair_Lower_Back_Stretch",
+    "name_ko": "앉아서 옆구리 늘리기",
+    "postures": [
+      "chair"
+    ],
+    "tags": [
+      "back",
+      "energy"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "의자에 바르게 앉아요.",
+      "한 팔을 머리 위로 넘기며 옆으로 기울여 10초, 반대쪽도 10초."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Lower_Back_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Lower_Back_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Spinal_Stretch",
+    "name_ko": "의자에서 상체 비틀기",
+    "postures": [
+      "chair"
+    ],
+    "tags": [
+      "back"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "발을 바닥에 붙이고 등을 세워 앉아요. 손은 머리 뒤에 깍지.",
+      "상체를 한쪽으로 천천히 비틀어 3번, 반대쪽도 3번."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Spinal_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Spinal_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Chair_Leg_Extended_Stretch",
+    "name_ko": "의자에서 다리 뻗기",
+    "postures": [
+      "chair"
+    ],
+    "tags": [
+      "legs"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "의자에 앉아 양옆 좌석을 잡아요.",
+      "한쪽 무릎을 펴서 다리를 들고 발끝을 몸 쪽으로 당겨요. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Leg_Extended_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Chair_Leg_Extended_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Tricep_Side_Stretch",
+    "name_ko": "팔 가로질러 당기기",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "shoulder"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "한쪽 팔을 몸 앞으로 가로질러 반대 어깨 쪽으로 보내요.",
+      "반대 손으로 팔꿈치를 잡고 지그시 당겨 15초씩."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Side_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Side_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Upper_Back_Stretch",
+    "name_ko": "깍지 끼고 등 둥글게",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "shoulder",
+      "back"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "양손 깍지를 끼고 엄지가 아래로 가게 해요.",
+      "어깨를 둥글게 말며 팔을 앞으로 쭉 밀어 20초."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upper_Back_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Upward_Stretch",
+    "name_ko": "위로 쭉 뻗기",
+    "postures": [
+      "stand",
+      "chair"
+    ],
+    "tags": [
+      "energy"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "양손을 머리 위로 뻗어 손바닥을 마주 대요.",
+      "등을 곧게 편 채 손을 위로, 살짝 뒤로 밀어 올려요."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upward_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Upward_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Standing_Lateral_Stretch",
+    "name_ko": "서서 옆구리 늘리기",
+    "postures": [
+      "stand"
+    ],
+    "tags": [
+      "energy",
+      "back"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "다리를 골반보다 조금 넓게 벌리고 무릎을 살짝 굽혀요.",
+      "한 손은 허리, 다른 손은 머리 뒤에 두고 옆으로 기울여요. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Lateral_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Lateral_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Elbows_Back",
+    "name_ko": "팔꿈치 뒤로 모으기",
+    "postures": [
+      "stand"
+    ],
+    "tags": [
+      "shoulder",
+      "energy"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "바르게 서서 양손을 허리 뒤에 대요.",
+      "팔꿈치를 뒤로 모으듯 당겨 가슴을 활짝 펴요."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Elbows_Back/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Elbows_Back/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Calf_Stretch_Hands_Against_Wall",
+    "name_ko": "벽 짚고 종아리 늘리기",
+    "postures": [
+      "stand"
+    ],
+    "tags": [
+      "legs"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "벽을 마주 보고 한 발을 앞으로 내딛어요.",
+      "벽에 손을 짚고 뒤꿈치를 바닥에 붙인 채 몸을 기울여요. 20초씩."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Calf_Stretch_Hands_Against_Wall/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Standing_Hip_Flexors",
+    "name_ko": "서서 골반 앞 늘리기",
+    "postures": [
+      "stand"
+    ],
+    "tags": [
+      "legs"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "한 발을 반 걸음 앞에 두고 서요.",
+      "두 무릎을 굽히고 뒤꿈치를 들며 골반을 앞으로 밀어요. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Flexors/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Flexors/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Middle_Back_Stretch",
+    "name_ko": "서서 허리 비틀기",
+    "postures": [
+      "stand"
+    ],
+    "tags": [
+      "back"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "발을 어깨너비로 벌리고 손은 허리에.",
+      "허리를 한쪽으로 비틀어 10~15초, 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Middle_Back_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Middle_Back_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Seated_Floor_Hamstring_Stretch",
+    "name_ko": "앉아서 허벅지 뒤 늘리기",
+    "postures": [
+      "floor"
+    ],
+    "tags": [
+      "legs"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "바닥에 앉아 한쪽 다리를 펴고 다른 발은 안쪽 허벅지에 붙여요.",
+      "골반부터 숙여 발목 쪽으로 손을 뻗어 15초씩."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Floor_Hamstring_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Cat_Stretch",
+    "name_ko": "고양이 자세",
+    "postures": [
+      "floor"
+    ],
+    "tags": [
+      "back"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "바닥에 손과 무릎을 짚어요.",
+      "배를 당기며 등을 둥글게 말고 고개를 떨궈 15초."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cat_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Childs_Pose",
+    "name_ko": "아기 자세",
+    "postures": [
+      "floor"
+    ],
+    "tags": [
+      "back",
+      "tired"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "무릎을 꿇고 손을 앞으로 걸어 나가요.",
+      "엉덩이를 뒤꿈치에 내려놓고 이마를 바닥에 대고 숨을 쉬어요. 무릎이 불편하면 건너뛰세요."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Childs_Pose/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Kneeling_Forearm_Stretch",
+    "name_ko": "손목·팔뚝 늘리기",
+    "postures": [
+      "floor"
+    ],
+    "tags": [
+      "wrist"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "무릎을 꿇고 손바닥을 바닥에, 손가락은 무릎 쪽을 향하게 해요.",
+      "손바닥을 붙인 채 몸을 천천히 뒤로 기대 20~30초."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Forearm_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kneeling_Forearm_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Wrist_Circles",
+    "name_ko": "손목 돌리기",
+    "postures": [
+      "chair",
+      "stand"
+    ],
+    "tags": [
+      "wrist"
+    ],
+    "seconds": 20,
+    "steps_ko": [
+      "팔을 앞이나 옆으로 편하게 뻗어요.",
+      "손목만 천천히 원을 그리며 돌려요. 10초 뒤 반대 방향."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Circles/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wrist_Circles/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Hug_Knees_To_Chest",
+    "name_ko": "무릎 끌어안기",
+    "postures": [
+      "lying"
+    ],
+    "tags": [
+      "back",
+      "tired"
+    ],
+    "seconds": 30,
+    "steps_ko": [
+      "등을 대고 누워 두 무릎을 가슴 쪽으로 당겨요.",
+      "무릎 아래쪽을 감싸 안고 천천히 어깨 쪽으로 당겨요."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hug_Knees_To_Chest/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hug_Knees_To_Chest/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "One_Knee_To_Chest",
+    "name_ko": "한쪽 무릎 당기기",
+    "postures": [
+      "lying"
+    ],
+    "tags": [
+      "back",
+      "legs"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "누워서 한쪽 다리는 펴고, 다른 무릎을 가슴으로 당겨요.",
+      "무릎 아래를 잡고 코 쪽으로 지그시. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Knee_To_Chest/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One_Knee_To_Chest/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Leg-Up_Hamstring_Stretch",
+    "name_ko": "누워서 다리 올리기",
+    "postures": [
+      "lying"
+    ],
+    "tags": [
+      "legs",
+      "tired"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "누워서 한쪽 무릎을 세우고 다른 다리를 위로 들어요.",
+      "발바닥이 천장을 향하게 펴고 몸 쪽으로 당겨요. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg-Up_Hamstring_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "Side-Lying_Floor_Stretch",
+    "name_ko": "옆으로 누워 옆구리 늘리기",
+    "postures": [
+      "lying"
+    ],
+    "tags": [
+      "energy",
+      "back",
+      "tired"
+    ],
+    "seconds": 40,
+    "steps_ko": [
+      "옆으로 누워 아래 무릎을 앞으로 굽혀 몸을 받쳐요.",
+      "위쪽 팔을 머리 위로 뻗어 몸 옆선을 길게 늘려요. 반대쪽도."
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side-Lying_Floor_Stretch/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side-Lying_Floor_Stretch/1.jpg"
+    ],
+    "source": "free-exercise-db (Unlicense)"
+  }
+]
