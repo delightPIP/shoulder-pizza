@@ -4,3 +4,4 @@ python-dotenv~=1.2
 gspread~=6.2
 google-auth~=2.62
 pytest~=9.1
+tzdata; sys_platform == "win32"
